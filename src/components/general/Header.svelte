@@ -12,12 +12,12 @@
             </a>
             <div class="nav">
                 <div class="nav-icon">
-                    <a>
+                    <a href="https://github.com/Mad-Pixels/golang-etc">
                         <div class="icon icon-gh icon-color border">
                             <DiGithubBadge />
                         </div>
                     </a>
-                    <a>
+                    <a href="https://t.me/golangetc">
                         <div class="icon icon-tg icon-color border">
                             <FaTelegramPlane />
                         </div>
