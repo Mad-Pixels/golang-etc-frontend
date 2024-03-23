@@ -13,7 +13,7 @@
   }
 </script>
 
-<div class="card border">
+<div class="card border card-color">
     <div class="header">
         <a href="{content.static.url}">
             <h2>{content.static.title}</h2>
