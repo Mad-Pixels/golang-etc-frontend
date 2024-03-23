@@ -1,0 +1,121 @@
+.light {
+    --background-footer: #f5f5f5;
+    --background-color: #ffffff;
+    --background-content-color: #ffffff;
+    --border-color: #333333;
+    --heading-color: #333333;
+    --text-color: #333333;
+    --text-content-color: #333333;
+    --logo-color: #333333;
+    --link-color: #0366d6;
+}
+
+.dark {
+    --background-footer: #161b22;
+    --background-color: #0d1117;
+    --background-content-color: #161b22;
+    --border-color: #21262d;
+    --heading-color: #f5f5f5;
+    --text-color: #848d97;
+    --text-content-color: #ececec;
+    --logo-color: #f5f5f5;
+    --link-color: #58a6ff;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    border-bottom: 1px solid var(--border-color);
+
+    justify-content: center;
+    box-sizing: border-box;
+    align-items: center;
+    flex-shrink: 0;
+    display: flex;
+    width: 100%;
+}
+
+footer {
+    background-color: var(--background-footer);
+
+    justify-content: center;
+    box-sizing: border-box;
+    align-items: center;
+    flex-shrink: 0;
+    display: flex;
+    width: 100%;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color:var(--heading-color)
+}
+
+.logo-color {
+    color: var(--logo-color);
+}
+
+.icon-color {
+    color: var(--text-color);
+}
+
+.block-content {
+    padding: 28px;
+    background: var(--background-content-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-content-color);
+}
+
+.normal-text {
+    font-weight: 400;
+}
+
+.medium-text {
+    font-weight: 500;
+}
+
+.bold-text {
+    font-weight: 700;
+}
+
+.border {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.container-block{
+    box-sizing: border-box;
+    max-width: 1920px;
+    min-width: 200px;
+    padding: 1.5em;
+    width: 100%;
+}
+
+.article pre {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+    .container-block {
+        padding: 1em;
+    }
+}
