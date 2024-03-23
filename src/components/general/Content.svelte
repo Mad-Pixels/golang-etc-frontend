@@ -1,5 +1,3 @@
-<script></script>
-
 <div class="container-main">
     <div class="container-block">
         <slot></slot>

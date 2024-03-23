@@ -1,31 +1,28 @@
 .light {
-    --background-footer: #f5f5f5;
-    --background-color: #ffffff;
-    --background-content-color: #ffffff;
-    --border-color: #333333;
-    --heading-color: #333333;
-    --text-color: #333333;
-    --text-content-color: #333333;
+    --background-color-100: #ffffff;
+    --background-color-90: #f5f5f5;
+    --border-color-100: #333333;
+    --text-color-100: #333333;
+    --text-color-90: #333333;
+    --text-color-80: #333333;
+    --link-color-100: #0366d6;
     --logo-color: #333333;
-    --link-color: #0366d6;
 }
-
 .dark {
-    --background-footer: #161b22;
-    --background-color: #0d1117;
-    --background-content-color: #161b22;
-    --border-color: #21262d;
-    --heading-color: #f5f5f5;
-    --text-color: #848d97;
-    --text-content-color: #ececec;
-    --logo-color: #f5f5f5;
+    --background-color-100: #0d1117;
+    --background-color-90: #161b22;
+    --border-color-100: #21262d;
+    --text-color-100: #ececec;
+    --text-color-90: #f5f5f5;
+    --text-color-80: #848d97;
     --link-color: #58a6ff;
+    --logo-color: #f5f5f5;
 }
 
 body {
-    background-color: var(--background-color);
+    background-color: var(--background-color-100);
     font-family: 'Roboto', sans-serif;
-    color: var(--text-color);
+    color: var(--text-color-90);
 
     flex-direction: column;
     align-items: center;
@@ -34,10 +31,8 @@ body {
     padding: 0;
     margin: 0;
 }
-
 header {
-    border-bottom: 1px solid var(--border-color);
-
+    border-bottom: 1px solid var(--border-color-100);
     justify-content: center;
     box-sizing: border-box;
     align-items: center;
@@ -45,10 +40,8 @@ header {
     display: flex;
     width: 100%;
 }
-
 footer {
-    background-color: var(--background-footer);
-
+    background-color: var(--background-color-90);
     justify-content: center;
     box-sizing: border-box;
     align-items: center;
@@ -66,38 +59,35 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color:var(--heading-color)
+    color:var(--text-color-90)
 }
 
 .logo-color {
     color: var(--logo-color);
 }
-
 .icon-color {
-    color: var(--text-color);
+    color: var(--text-color-90);
 }
 
 .block-content {
     padding: 28px;
-    background: var(--background-content-color);
-    border: 1px solid var(--border-color);
-    color: var(--text-content-color);
+    background: var(--background-color-100);
+    border: 1px solid var(--border-color-100);
+    color: var(--text-color-100);
 }
 
 .normal-text {
     font-weight: 400;
 }
-
 .medium-text {
     font-weight: 500;
 }
-
 .bold-text {
     font-weight: 700;
 }
 
 .border {
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color-100);
     border-radius: 6px;
 }
 
@@ -110,7 +100,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .article pre {
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color-100);
     border-radius: 6px;
 }
 

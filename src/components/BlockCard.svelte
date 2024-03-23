@@ -1,6 +1,5 @@
 <script>
   import FaBuffer from 'svelte-icons/fa/FaBuffer.svelte'
-
   export let content;
 </script>
 

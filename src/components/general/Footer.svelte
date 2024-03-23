@@ -1,5 +1,3 @@
-<script></script>
-
 <footer>
     <div class="container-block">
         <div class="footer-content">

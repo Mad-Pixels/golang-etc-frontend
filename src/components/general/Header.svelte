@@ -1,8 +1,7 @@
 <script>
   import FaTelegramPlane from 'svelte-icons/fa/FaTelegramPlane.svelte';
-  import DiGithubBadge from 'svelte-icons/di/DiGithubBadge.svelte';
-
-  import ToggleTheme from '../ToggleTheme.svelte';
+  import DiGithubBadge   from 'svelte-icons/di/DiGithubBadge.svelte';
+  import ToggleTheme     from '../ToggleTheme.svelte';
 </script>
 
 <header>
