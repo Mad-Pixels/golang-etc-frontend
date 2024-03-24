@@ -39,7 +39,7 @@ POSTIFY_VERSION="0.0.1"
 POSTIFY_NAME="postify"
 POSTIFY_URL="https://github.com/Mad-Pixels/go-postify/releases/download/v${POSTIFY_VERSION}/${POSTIFY_NAME}-${OS}-${ARCH}"
 
-STATIC_NAME="golang-etc"
+STATIC_NAME="golang-etc-content"
 STATIC_SOURCE_GIT_URL="https://github.com/Mad-Pixels/${STATIC_NAME}.git"
 
 HR=$(printf '%*s\n' "80" '' | tr ' ' '=')
