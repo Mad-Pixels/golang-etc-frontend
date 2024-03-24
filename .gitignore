@@ -128,3 +128,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# IDE
+.idea/
+
+# svelte
+.svelte-kit/
+
+# generated content tracking.
+go-doc-articles/
+src/routes/content/*/
+!src/routes/content/*.*
