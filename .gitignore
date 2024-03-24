@@ -136,6 +136,6 @@ dist
 .svelte-kit/
 
 # generated content tracking.
-go-doc-articles/
+build/
 src/routes/content/*/
 !src/routes/content/*.*

@@ -29,6 +29,4 @@ jobs:
           chmod +x ./.github/deploy.sh
           ./.github/deploy.sh
         env:
-          TG_CHAT: ${{ secrets.CONTENT_TG_CHAT }}
-          TG_TOKEN: ${{ secrets.CONTENT_TG_TOKEN }}
           AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
