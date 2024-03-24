@@ -72,7 +72,7 @@ echo -e "${GREEN}Download sources.${NC}"
 if cd "${ROOT_DIR}" && git clone "${STATIC_SOURCE_GIT_URL}"; then
   echo -e "${GREEN}Start generate static data.${NC}"
 
-  CONTENT_ALL=$(cd "${ROOT_DIR}/${STATIC_NAME}" && ls -d */)
+  CONTENT_ALL=$(cd "${ROOT_DIR}/${STATIC_NAME}" && ls -d */ || echo "")
   for dir in $CONTENT_ALL; do 
     if ! ${ROOT_DIR}/${POSTIFY_NAME} html-content \
       --with-router "${ROOT_DIR}/src/routes/content/router.json" \
