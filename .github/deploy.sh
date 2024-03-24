@@ -28,7 +28,7 @@ if [ "$OS" != "Linux" ] && [ "$OS" != "Darwin" ]; then
 fi 
 
 STATIC_BUCKET=${AWS_BUCKET}
-validate_env "${STATIC_BUCKET}"
+validate_env "STATIC_BUCKET"
 
 ############################################################
 # Define Global Variables                                  #
@@ -110,4 +110,3 @@ echo -e "\n"
 echo -e "${GREEN}FINISH.${NC}"
 echo -e "${YELLOW}$HR${NC}\n"
 exit 0 
-
