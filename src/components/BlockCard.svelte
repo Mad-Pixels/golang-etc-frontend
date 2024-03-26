@@ -1,7 +1,8 @@
 <script>
   import FaTelegramPlane from 'svelte-icons/fa/FaTelegramPlane.svelte';
-  import MdAccessTime    from 'svelte-icons/md/MdAccessTime.svelte';
   import DiGithubAlt     from 'svelte-icons/di/DiGithubAlt.svelte';
+  import FaHashtag       from 'svelte-icons/fa/FaHashtag.svelte';
+  import {lineBreaks}    from '../lib/line_breaks.js';
 
   export let meta;
   export let url;
@@ -18,19 +19,18 @@
 <div class="card border card-color">
     <div class="header">
         <a href="{url}">
-            <h2>{meta.static.title}</h2>
+            <h2 class="break-lines">{lineBreaks(meta.static.title, 31)}</h2>
         </a>
+        <div class="header-date">
+            {#if meta.telegram && meta.telegram.date}
+                { formatDate(meta.telegram.date) }
+            {/if}
+        </div>
     </div>
     <div class="body">
-        {#if meta.telegram && meta.telegram.date}
-            <div class="meta">
-                <div class="icon md-icon icon-color"><MdAccessTime /></div>
-                { formatDate(meta.telegram.date) }
-            </div>
-        {/if}
         {#if meta.telegram && meta.telegram.message_id }
             <div class="meta">
-                <div class="icon fa-icon icon-color"><FaTelegramPlane /></div>
+                <div class="icon fa-icon icon-color-secondary"><FaTelegramPlane /></div>
                 <a href="https://t.me/golangetc/{ meta.telegram.message_id }">
                     { meta.telegram.message_id }
                 </a>
@@ -38,11 +38,21 @@
         {/if}
         {#if meta.tags && meta.tags.author }
             <div class="meta">
-                <div class="icon di-icon icon-color"><DiGithubAlt /></div>
+                <div class="icon di-icon icon-color-secondary"><DiGithubAlt /></div>
                 <a href="https://github.com/{ meta.tags.author }">
                     { meta.tags.author }
                 </a>
             </div>
+        {/if}
+        {#if meta.tags}
+            {#each Object.entries(meta.tags) as [key, value]}
+                {#if key !== 'author'}
+                    <div class="meta">
+                        <div class=" md-icon icon-color-secondary"><FaHashtag /></div>
+                        <div class="tag">{value}</div>
+                    </div>
+                {/if}
+            {/each}
         {/if}
     </div>
 </div>
@@ -52,10 +62,11 @@
         padding: 12px;
     }
     .header{
-        justify-content: flex-start;
-        align-items: center;
+        justify-content: space-between;
+        align-items: baseline;
         flex-direction: row;
         display: flex;
+        width: 100%;
     }
     .header h2 {
         font-size: 1.2em;
@@ -63,15 +74,22 @@
     }
     .body {
         flex-direction: row;
+        flex-wrap: wrap;
         margin-top: 8px;
-        display: flex;
         font-size: .9em;
+        display: flex;
     }
     .meta {
         flex-direction: row;
         align-items: center;
         display: flex;
         margin-right: 8px;
+        padding: 4px 0;
+    }
+    .header-date {
+        text-align: right;
+        font-size: .8em;
+        width: 78px;
     }
     .icon {
         margin-right: 4px;
@@ -85,8 +103,8 @@
         height: 16px;
     }
     .md-icon{
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
     }
 
     @media (max-width: 768px) {
