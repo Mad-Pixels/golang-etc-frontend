@@ -78,7 +78,6 @@ if cd "${ROOT_DIR}" && git clone "${STATIC_SOURCE_GIT_URL}"; then
       --with-router "${ROOT_DIR}/src/routes/content/router.json" \
       --with-tmpl "${ROOT_DIR}/assets/templates/content.svelte" \
       --to "${ROOT_DIR}/src/routes/content/${dir}" \
-      --with-assets "${ROOT_DIR}/assets/content" \
       --from "${ROOT_DIR}/${STATIC_NAME}/${dir}" \
       --with-name +page.svelte;
     then
