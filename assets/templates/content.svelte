@@ -1,12 +1,24 @@
 <script>
+  // components.
   import Header    from "../../../components/general/Header.svelte";
   import Content   from "../../../components/general/Content.svelte";
   import Footer    from "../../../components/general/Footer.svelte";
 
-  import goLang from 'highlight.js/lib/languages/go';
-  import hljs   from 'highlight.js/lib/core';
-  import 'highlight.js/styles/github-dark-dimmed.min.css';
+  // static data.
+  import { page }   from '$app/stores';
+  import { router } from '../../../stores/router.js';
+  $: currentPageData = $router[$page.url.pathname] || null;
 
+  // title.
+  $: slug = $page.url.pathname.split('/').filter(Boolean).pop();
+  $: if (typeof document !== 'undefined' && currentPageData) {
+    document.title = currentPageData.static?.title || 'GoLang etc.';
+  }
+
+  // highlight.
+  import 'highlight.js/styles/github-dark-dimmed.min.css';
+  import goLang      from 'highlight.js/lib/languages/go';
+  import hljs        from 'highlight.js/lib/core';
   import { onMount } from 'svelte';
   onMount(() => {
     document.querySelectorAll('.article pre code').forEach((block) => {

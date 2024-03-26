@@ -1,18 +1,18 @@
 <script>
   import BlockCard from "./BlockCard.svelte";
-  export let content = [];
+  export let metadata = {};
 </script>
 
 <div class="cards">
-    {#each content as article}
-        <BlockCard content={article} />
+    {#each Object.entries(metadata) as [key, value]}
+        <BlockCard url={key} meta={value} />
     {/each}
 </div>
 
 <style>
     .cards {
-        display: grid;
         grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+        display: grid;
         gap: 1em;
     }
 </style>

@@ -9,6 +9,6 @@
 
 <Header/>
 <Content>
-    <BlockDashboard content={$router} />
+    <BlockDashboard metadata={$router} />
 </Content>
 <Footer/>
