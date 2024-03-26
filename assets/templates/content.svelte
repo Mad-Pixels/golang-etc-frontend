@@ -41,17 +41,17 @@
 
 <style>
     .article {
-        padding: 0 20% 0 20%;
+        padding: 0 10% 0 10%;
     }
 
     @media (max-width: 1020px) {
         .article {
-            padding: 0 15% 0 15%;
+            padding: 0 5% 0 5%;
         }
     }
     @media (max-width: 768px) {
         .article {
-            padding: 0 10% 0 10%;
+            padding: 0;
         }
     }
 </style>

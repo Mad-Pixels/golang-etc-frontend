@@ -1,1 +1,14 @@
-{}
+{
+  "/content/sample-articles8/": {
+    "telegram": {
+      "message_id": 0,
+      "date": 0
+    },
+    "static": {
+      "title": "hello"
+    },
+    "tags": {
+      "author": "mr-chelyshkin"
+    }
+  }
+}
