@@ -4,51 +4,22 @@
   import Content   from "../../../components/general/Content.svelte";
   import Footer    from "../../../components/general/Footer.svelte";
 
-  // static.
+  // system.
   import { onMount } from "svelte";
   import { page }    from '$app/stores';
-  import { router }  from '../../../stores/router.js';
 
-  let component;
-  let styles;
+  // highlights.
+  import typescript from "svelte-highlight/languages/go";
+  import {Highlight, LineNumbers } from "svelte-highlight";
+  import atomOneDark               from "svelte-highlight/styles/atom-one-dark";
 
-  // highlight
-  import {HighlightAuto, LineNumbers } from "svelte-highlight";
-  import atomOneDark from "svelte-highlight/styles/atom-one-dark";
-  onMount(async () => {
-      component = (await import("svelte-highlight")).HighlightAuto;
-      styles = (await import("svelte-highlight/styles/github")).default;
-  });
+  // static.
+  import { router }       from '../../../stores/router.js';
+  import { parseContent } from '../../../lib/content_parser.js';
 
-  // content.
-  let htmlContent = `{{index . "main.md"}}`
+  let htmlContent = `{{index . "main.md"}}`;
   let blocks = [];
-
-  onMount(() => {
-      parseContent();
-  });
-  function decodeHtml(html) {
-      var txt = document.createElement('textarea');
-      txt.innerHTML = html;
-      return txt.value;
-  }
-  function parseContent() {
-      const regex = /<pre><code[^>]*>([\s\S]*?)<\/code><\/pre>/g;
-      let lastIndex = 0;
-      blocks = [];
-
-      htmlContent.replace(regex, (match, codeContent, index) => {
-          if (index > lastIndex) {
-              blocks.push({ type: 'text', content: decodeHtml(htmlContent.slice(lastIndex, index)) });
-          }
-          blocks.push({ type: 'code', content: decodeHtml(codeContent) });
-          lastIndex = index + match.length;
-      });
-      if (lastIndex < htmlContent.length) {
-          blocks.push({ type: 'text', content: htmlContent.slice(lastIndex) });
-      }
-  }
-
+  onMount(() => { blocks = parseContent(htmlContent); });
 </script>
 
 <svelte:head>
@@ -62,9 +33,9 @@
         <div class="block-content">
             {#each blocks as block}
                 {#if block.type === 'code'}
-                    <HighlightAuto code={block.content} let:highlighted>
-                        <LineNumbers {highlighted} hideBorder />
-                    </HighlightAuto>
+                    <Highlight code={block.content} language={typescript} let:highlighted>
+                        <LineNumbers {highlighted} />
+                    </Highlight>
                 {:else}
                     {@html block.content}
                 {/if}
