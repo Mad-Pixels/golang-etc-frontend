@@ -17,6 +17,7 @@
   import { router }       from '../../../stores/router.js';
   import { parseContent } from '../../../lib/content_parser.js';
 
+  // content.
   let htmlContent = `{{index . "main.md"}}`;
   let blocks = [];
   onMount(() => { blocks = parseContent(htmlContent); });
@@ -28,21 +29,21 @@
 </svelte:head>
 
 <Header/>
-<Content>
-    <div class="article">
-        <div class="block-content">
-            {#each blocks as block}
-                {#if block.type === 'code'}
-                    <Highlight code={block.content} language={typescript} let:highlighted>
-                        <LineNumbers {highlighted} />
-                    </Highlight>
-                {:else}
-                    {@html block.content}
-                {/if}
-            {/each}
+    <Content>
+        <div class="article">
+            <div class="block-content">
+                {#each blocks as block}
+                    {#if block.type === 'code'}
+                        <Highlight code={block.content} language={typescript} let:highlighted>
+                            <LineNumbers {highlighted} />
+                        </Highlight>
+                    {:else}
+                        {@html block.content}
+                    {/if}
+                {/each}
+            </div>
         </div>
-    </div>
-</Content>
+    </Content>
 <Footer/>
 
 <style>

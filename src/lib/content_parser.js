@@ -1,10 +1,14 @@
-export function parseContent(htmlContent) {
-    const decodeHtml = (html) => {
-        let txt = document.createElement('textarea');
-        txt.innerHTML = html;
-        return txt.value;
-    };
+let txtElement;
 
+function decodeHtml(html) {
+    if (!txtElement) {
+        txtElement = document.createElement('textarea');
+    }
+    txtElement.innerHTML = html;
+    return txtElement.value;
+}
+
+export function parseContent(htmlContent) {
     const regex = /<pre><code[^>]*>([\s\S]*?)<\/code><\/pre>/g;
     let lastIndex = 0;
     let blocks = [];
