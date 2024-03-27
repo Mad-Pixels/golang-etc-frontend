@@ -11,9 +11,10 @@
   // highlights.
   import typescript from "svelte-highlight/languages/go";
   import {Highlight, LineNumbers } from "svelte-highlight";
-  import atomOneDark               from "svelte-highlight/styles/atom-one-dark";
+  import atomOneDark               from "svelte-highlight/styles/github-dark";
 
   // static.
+  import { copy }         from '../../../lib/clipboard';
   import { router }       from '../../../stores/router.js';
   import { parseContent } from '../../../lib/content_parser.js';
 
@@ -34,6 +35,7 @@
             <div class="block-content">
                 {#each blocks as block}
                     {#if block.type === 'code'}
+                        <button on:click={() => copy(block.content)}>Копировать код</button>
                         <Highlight code={block.content} language={typescript} let:highlighted>
                             <LineNumbers {highlighted} />
                         </Highlight>
