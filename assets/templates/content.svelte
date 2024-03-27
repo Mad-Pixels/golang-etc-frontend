@@ -48,6 +48,7 @@
           blocks.push({ type: 'text', content: htmlContent.slice(lastIndex) });
       }
   }
+
 </script>
 
 <svelte:head>
@@ -61,11 +62,9 @@
         <div class="block-content">
             {#each blocks as block}
                 {#if block.type === 'code'}
-                    <svelte:component
-                            this={component}
-                            langtag
-                            code={block.content}
-                    />
+                    <HighlightAuto code={block.content} let:highlighted>
+                        <LineNumbers {highlighted} hideBorder />
+                    </HighlightAuto>
                 {:else}
                     {@html block.content}
                 {/if}
