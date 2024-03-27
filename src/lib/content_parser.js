@@ -1,27 +1,32 @@
-let txtElement;
-
-function decodeHtml(html) {
-    if (!txtElement) {
-        txtElement = document.createElement('textarea');
-    }
-    txtElement.innerHTML = html;
-    return txtElement.value;
+function decodeHtmlEntities(html) {
+    const entitiesMap = {
+        '&quot;': '"',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&amp;': '&',
+    };
+    return html.replace(/&quot;|&lt;|&gt;|&amp;/g, (match) => entitiesMap[match]);
 }
 
 export function parseContent(htmlContent) {
     const regex = /<pre><code[^>]*>([\s\S]*?)<\/code><\/pre>/g;
-    let lastIndex = 0;
+    let match;
     let blocks = [];
+    let lastIndex = 0;
 
-    htmlContent.replace(regex, (match, codeContent, index) => {
+    while ((match = regex.exec(htmlContent)) !== null) {
+        const { index } = match;
         if (index > lastIndex) {
-            blocks.push({ type: 'text', content: decodeHtml(htmlContent.slice(lastIndex, index)) });
+            const textContent = htmlContent.substring(lastIndex, index);
+            blocks.push({ type: 'text', content: decodeHtmlEntities(textContent) });
         }
-        blocks.push({ type: 'code', content: decodeHtml(codeContent) });
-        lastIndex = index + match.length;
-    });
+        const codeContent = match[1];
+        blocks.push({ type: 'code', content: decodeHtmlEntities(codeContent) });
+        lastIndex = index + match[0].length;
+    }
     if (lastIndex < htmlContent.length) {
-        blocks.push({ type: 'text', content: htmlContent.slice(lastIndex) });
+        const remainingText = htmlContent.substring(lastIndex);
+        blocks.push({ type: 'text', content: decodeHtmlEntities(remainingText) });
     }
     return blocks;
 }
