@@ -4,36 +4,48 @@
   import Content   from "../../../components/general/Content.svelte";
   import Footer    from "../../../components/general/Footer.svelte";
 
-  // static.
-  import { page }   from '$app/stores';
-  import { router } from '../../../stores/router.js';
+  // system.
+  import { onMount } from "svelte";
+  import { page }    from '$app/stores';
 
-  // highlight.
-  import 'highlight.js/styles/github-dark-dimmed.min.css';
-  import goLang      from 'highlight.js/lib/languages/go';
-  import hljs        from 'highlight.js/lib/core';
-  import { onMount } from 'svelte';
-  onMount(() => {
-    document.querySelectorAll('.article pre code').forEach((block) => {
-      hljs.highlightBlock(block);
-    });
-  });
-  hljs.registerLanguage('go', goLang);
-  let htmlContent = `{{index . "main.md"}}`
+  // highlights.
+  import typescript from "svelte-highlight/languages/go";
+  import {Highlight, LineNumbers } from "svelte-highlight";
+  import atomOneDark               from "svelte-highlight/styles/github-dark";
+
+  // static.
+  import { copy }         from '../../../lib/clipboard';
+  import { router }       from '../../../stores/router.js';
+  import { parseContent } from '../../../lib/content_parser.js';
+
+  // content.
+  let htmlContent = `{{index . "main.md"}}`;
+  let blocks = [];
+  onMount(() => { blocks = parseContent(htmlContent); });
 </script>
 
 <svelte:head>
     <title>{$router[$page.url.pathname].static.title || 'GoLang etc.'}</title>
+    {@html atomOneDark}
 </svelte:head>
 
 <Header/>
-<Content>
-    <div class="article">
-        <div class="block-content">
-            {@html htmlContent}
+    <Content>
+        <div class="article">
+            <div class="block-content">
+                {#each blocks as block}
+                    {#if block.type === 'code'}
+                        <button on:click={() => copy(block.content)}>Копировать код</button>
+                        <Highlight code={block.content} language={typescript} let:highlighted>
+                            <LineNumbers {highlighted} />
+                        </Highlight>
+                    {:else}
+                        {@html block.content}
+                    {/if}
+                {/each}
+            </div>
         </div>
-    </div>
-</Content>
+    </Content>
 <Footer/>
 
 <style>
