@@ -87,19 +87,16 @@
         align-items: center;
         display: flex;
         margin-right: 8px;
-        padding: 4px 0;
+        padding: 2px 0;
     }
     .header-date {
         text-align: right;
         font-size: .8em;
         min-width: 64px;
     }
-    .icon {
-        margin-right: 4px;
-    }
     .di-icon {
-        width: 20px;
-        height: 20px;
+        width: 21px;
+        height: 21px;
     }
     .fa-icon {
         width: 16px;

@@ -1,7 +1,7 @@
 .light {
     --header-color:         #ffffff;
     --body-color:           #f0f0f0;
-    --footer-color:         #f5f5f5;
+    --footer-color:         #ffffff;
     --content-color:        #ffffff;
     --card-main-color:      #ffffff;
     --logo-color:           #333333;
@@ -9,10 +9,10 @@
     --btn-main-color-hover: #2c7db0;
     --header-main-color:    #333333;
     --text-main-color:      #333333;
-    --border-main-color:    #bebebe;
-    --link-main-color:      #58a6ff;
+    --border-main-color:    #dadada;
+    --link-main-color:      #037eff;
     --icon-main-color:      #333333;
-    --icon-secondary-color: #838d97;
+    --icon-secondary-color: #333333;
 }
 .dark {
     --header-color:         #0d1117;
@@ -24,8 +24,8 @@
     --btn-main-color:       #238636;
     --btn-main-color-hover: #259a3c;
     --header-main-color:    #f5f5f5;
-    --text-main-color:      #f5f5f5;
-    --border-main-color:    #bebebe;
+    --text-main-color:      #e6edf3;
+    --border-main-color: #363636;
     --link-main-color:      #4493f8;
     --icon-main-color:      #f5f5f5;
     --icon-secondary-color: #838d97;
