@@ -11,7 +11,7 @@
 
 <style>
     .cards {
-        grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
         display: grid;
         gap: 1em;
     }

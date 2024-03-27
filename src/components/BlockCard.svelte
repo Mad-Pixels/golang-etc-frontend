@@ -19,7 +19,7 @@
 <div class="card border card-color">
     <div class="header">
         <a href="{url}">
-            <h2 class="break-lines">{lineBreaks(meta.static.title, 31)}</h2>
+            <h2 class="break-lines">{lineBreaks(meta.static.title, 50)}</h2>
         </a>
         <div class="header-date">
             {#if meta.telegram && meta.telegram.date}
@@ -89,7 +89,7 @@
     .header-date {
         text-align: right;
         font-size: .8em;
-        width: 78px;
+        min-width: 64px;
     }
     .icon {
         margin-right: 4px;
