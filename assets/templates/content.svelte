@@ -4,16 +4,9 @@
   import Content   from "../../../components/general/Content.svelte";
   import Footer    from "../../../components/general/Footer.svelte";
 
-  // static data.
+  // static.
   import { page }   from '$app/stores';
   import { router } from '../../../stores/router.js';
-  $: currentPageData = $router[$page.url.pathname] || null;
-
-  // title.
-  $: slug = $page.url.pathname.split('/').filter(Boolean).pop();
-  $: if (typeof document !== 'undefined' && currentPageData) {
-    document.title = currentPageData.static?.title || 'GoLang etc.';
-  }
 
   // highlight.
   import 'highlight.js/styles/github-dark-dimmed.min.css';
@@ -28,6 +21,10 @@
   hljs.registerLanguage('go', goLang);
   let htmlContent = `{{index . "main.md"}}`
 </script>
+
+<svelte:head>
+    <title>{$router[$page.url.pathname].static.title || 'GoLang etc.'}</title>
+</svelte:head>
 
 <Header/>
 <Content>
