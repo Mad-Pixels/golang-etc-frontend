@@ -11,7 +11,7 @@
     theme.subscribe(value => currentTheme = value);
 </script>
 
-<button class="theme-toggle btn-main {currentTheme}" on:click={toggleTheme} aria-label="theme switch">
+<button class="theme-toggle global__btn-main {currentTheme}" on:click={toggleTheme} aria-label="theme switch">
     {#if currentTheme === 'light'}
         <div class="toggle-icon icon" in:fade={{ duration: 700 }}>
             <IoMdSunny />

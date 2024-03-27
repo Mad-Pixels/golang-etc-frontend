@@ -32,7 +32,7 @@
 <Header/>
     <Content>
         <div class="article">
-            <div class="block-content">
+            <div class="global__block-main">
                 {#each blocks as block}
                     {#if block.type === 'code'}
                         <button on:click={() => copy(block.content)}>Копировать код</button>
