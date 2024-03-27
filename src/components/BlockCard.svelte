@@ -59,6 +59,9 @@
 
 <style>
     .card {
+        justify-content: space-between;
+        flex-direction: column;
+        display: flex;
         padding: 12px;
     }
     .header{
