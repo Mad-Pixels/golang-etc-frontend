@@ -11,11 +11,13 @@
   import { page }    from '$app/stores';
 
   // highlights.
-  import typescript from "svelte-highlight/languages/go";
   import {Highlight, LineNumbers } from "svelte-highlight";
-  import atomOneDark               from "svelte-highlight/styles/github-dark";
+  import golang                    from "svelte-highlight/languages/go";
+  import theme_light               from "svelte-highlight/styles/default";
+  import theme_dark                from "svelte-highlight/styles/github-dark-dimmed";
 
   // static.
+  import { theme }        from '../../../lib/theme.js';
   import { router }       from '../../../stores/router.js';
   import { parseContent } from '../../../lib/content_parser.js';
 
@@ -23,18 +25,38 @@
   let htmlContent = `{{index . "main.md"}}`;
   let activeButtonIndex = null;
   let blocks = [];
-  onMount(() => { blocks = parseContent(htmlContent); });
+
+  onMount(() => {
+    blocks = parseContent(htmlContent);
+
+    theme.subscribe(value => {
+      updateTheme(value);
+    });
+    updateTheme($theme);
+  });
 
   // clipboard.
   async function copy(content, index) {
     await navigator.clipboard.writeText(content);
     activeButtonIndex = index;
   }
+  function updateTheme(theme) {
+    if (typeof window !== "undefined") {
+      const previousStyles = document.head.querySelector('style[data-theme="custom"]');
+      if (previousStyles) {
+        document.head.removeChild(previousStyles);
+      }
+      const style = document.createElement('style');
+      style.setAttribute('data-theme', 'custom');
+      style.textContent = theme === 'dark' ? theme_dark : theme_light;
+      document.head.appendChild(style);
+    }
+  }
 </script>
 
 <svelte:head>
     <title>{$router[$page.url.pathname].static.title || 'GoLang etc.'}</title>
-    {@html atomOneDark}
+    {@html theme_light}
 </svelte:head>
 
 <Header/>
@@ -52,8 +74,8 @@
                                 {/if}
                             </button>
                         </div>
-                        <Highlight code={block.content} language={typescript} let:highlighted>
-                            <LineNumbers {highlighted} />
+                        <Highlight code={block.content} language={golang} let:highlighted>
+                            <LineNumbers {highlighted} style="border-radius: 6px"/>
                         </Highlight>
                     {:else}
                         {@html block.content}
