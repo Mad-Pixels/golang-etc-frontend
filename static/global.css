@@ -4,36 +4,40 @@
     --footer-color:         #ffffff;
     --content-color:        #ffffff;
     --card-main-color:      #ffffff;
-    --logo-color:           #333333;
+    --logo-color:           #2a2e32;
     --btn-main-color:       #548eaa;
     --btn-main-color-hover: #2c7db0;
-    --header-main-color:    #333333;
-    --text-main-color:      #333333;
-    --border-main-color:    #dadada;
-    --link-main-color:      #037eff;
-    --icon-main-color:      #333333;
-    --icon-secondary-color: #333333;
+    --header-main-color:    #2a2e32;
+    --text-main-color:      #1f2329;
+    --text-secondary-color: #6e7781;
+    --border-main-color:    #d0d7de;
+    --link-main-color:      #0a69da;
+    --icon-main-color:      #2a2e32;
+    --icon-secondary-color: #2a2e32;
+    --border-radius:        6px;
 }
 .dark {
     --header-color:         #0d1117;
     --body-color:           #0d1117;
     --footer-color:         #161b22;
-    --content-color:        #333333;
-    --card-main-color:      #333333;
+    --content-color:        #161b22;
+    --card-main-color:      #161b22;
     --logo-color:           #f5f5f5;
     --btn-main-color:       #238636;
     --btn-main-color-hover: #259a3c;
     --header-main-color:    #f5f5f5;
-    --text-main-color:      #e6edf3;
-    --border-main-color: #363636;
-    --link-main-color:      #4493f8;
+    --text-main-color:      #f6f7f9;
+    --text-secondary-color: #838d97;
+    --border-main-color:    #30363d;
+    --link-main-color:      #2f81f7;
     --icon-main-color:      #f5f5f5;
     --icon-secondary-color: #838d97;
+    --border-radius:        6px;
 }
 
 body {
     background-color: var(--body-color);
-    font-family: 'Roboto', sans-serif;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
     color: var(--text-main-color);
     flex-direction: column;
     align-items: center;
@@ -115,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .global__border-main {
     border: 1px solid var(--border-main-color);
-    border-radius: 4px;
+    border-radius: var(--border-radius);
 }
 
 .global__break-lines {
