@@ -1,8 +1,11 @@
 <script>
   import FaTelegramPlane from 'svelte-icons/fa/FaTelegramPlane.svelte';
-  import MdAccessTime from 'svelte-icons/md/MdAccessTime.svelte';
-  import DiGithubAlt from 'svelte-icons/di/DiGithubAlt.svelte';
-  export let content;
+  import DiGithubAlt     from 'svelte-icons/di/DiGithubAlt.svelte';
+  import FaHashtag       from 'svelte-icons/fa/FaHashtag.svelte';
+  import {lineBreaks}    from '../lib/line_breaks.js';
+
+  export let meta;
+  export let url;
 
   function formatDate(timestamp) {
     const date = new Date(timestamp * 1000);
@@ -13,48 +16,60 @@
   }
 </script>
 
-<div class="card border card-color">
+<div class="card global__border-main global__card-main">
     <div class="header">
-        <a href="{content.static.url}">
-            <h2>{content.static.title}</h2>
+        <a href="{url}">
+            <h2 class="global__break-lines">{lineBreaks(meta.static.title, 50)}</h2>
         </a>
+        <div class="header-date">
+            {#if meta.telegram && meta.telegram.date}
+                { formatDate(meta.telegram.date) }
+            {/if}
+        </div>
     </div>
     <div class="body">
-        {#if content.telegram && content.telegram.date}
+        {#if meta.telegram && meta.telegram.message_id }
             <div class="meta">
-                <div class="icon md-icon icon-color"><MdAccessTime /></div>
-                { formatDate(content.telegram.date) }
-            </div>
-        {/if}
-        {#if content.telegram && content.telegram.message_id }
-            <div class="meta">
-                <div class="icon fa-icon icon-color"><FaTelegramPlane /></div>
-                <a href="https://t.me/golangetc/{ content.telegram.message_id }">
-                    { content.telegram.message_id }
+                <div class="icon fa-icon global__icon-secondary"><FaTelegramPlane /></div>
+                <a href="https://t.me/golangetc/{ meta.telegram.message_id }">
+                    { meta.telegram.message_id }
                 </a>
             </div>
         {/if}
-        {#if content.tags && content.tags.author }
+        {#if meta.tags && meta.tags.author }
             <div class="meta">
-                <div class="icon di-icon icon-color"><DiGithubAlt /></div>
-                <a href="https://github.com/{ content.tags.author }">
-                    { content.tags.author }
+                <div class="icon di-icon global__icon-secondary"><DiGithubAlt /></div>
+                <a href="https://github.com/{ meta.tags.author }">
+                    { meta.tags.author }
                 </a>
             </div>
         {/if}
-
+        {#if meta.tags}
+            {#each Object.entries(meta.tags) as [key, value]}
+                {#if key !== 'author'}
+                    <div class="meta">
+                        <div class=" md-icon global__icon-secondary"><FaHashtag /></div>
+                        <div class="tag">{value}</div>
+                    </div>
+                {/if}
+            {/each}
+        {/if}
     </div>
 </div>
 
 <style>
     .card {
+        justify-content: space-between;
+        flex-direction: column;
+        display: flex;
         padding: 12px;
     }
     .header{
-        justify-content: flex-start;
-        align-items: center;
+        justify-content: space-between;
+        align-items: baseline;
         flex-direction: row;
         display: flex;
+        width: 100%;
     }
     .header h2 {
         font-size: 1.2em;
@@ -62,30 +77,34 @@
     }
     .body {
         flex-direction: row;
+        flex-wrap: wrap;
         margin-top: 8px;
-        display: flex;
         font-size: .9em;
+        display: flex;
     }
     .meta {
         flex-direction: row;
         align-items: center;
         display: flex;
         margin-right: 8px;
+        padding: 2px 0;
     }
-    .icon {
-        margin-right: 4px;
+    .header-date {
+        text-align: right;
+        font-size: .8em;
+        min-width: 64px;
     }
     .di-icon {
-        width: 20px;
-        height: 20px;
+        width: 21px;
+        height: 21px;
     }
     .fa-icon {
         width: 16px;
         height: 16px;
     }
     .md-icon{
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
     }
 
     @media (max-width: 768px) {

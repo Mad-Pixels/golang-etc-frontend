@@ -7,8 +7,12 @@
   import { router } from '../stores/router';
 </script>
 
+<svelte:head>
+    <title>GoLang etc.</title>
+</svelte:head>
+
 <Header/>
 <Content>
-    <BlockDashboard content={$router} />
+    <BlockDashboard metadata={$router} />
 </Content>
 <Footer/>
