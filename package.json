@@ -34,7 +34,7 @@
   },
   "type": "module",
   "dependencies": {
-    "highlight.js": "^11.9.0",
+    "svelte-highlight": "^7.6.0",
     "svelte-icons": "^2.1.0"
   }
 }

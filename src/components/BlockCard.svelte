@@ -16,10 +16,10 @@
   }
 </script>
 
-<div class="card border card-color">
+<div class="card global__border-main global__card-main">
     <div class="header">
         <a href="{url}">
-            <h2 class="break-lines">{lineBreaks(meta.static.title, 31)}</h2>
+            <h2 class="global__break-lines">{lineBreaks(meta.static.title, 50)}</h2>
         </a>
         <div class="header-date">
             {#if meta.telegram && meta.telegram.date}
@@ -30,7 +30,7 @@
     <div class="body">
         {#if meta.telegram && meta.telegram.message_id }
             <div class="meta">
-                <div class="icon fa-icon icon-color-secondary"><FaTelegramPlane /></div>
+                <div class="icon fa-icon global__icon-secondary"><FaTelegramPlane /></div>
                 <a href="https://t.me/golangetc/{ meta.telegram.message_id }">
                     { meta.telegram.message_id }
                 </a>
@@ -38,7 +38,7 @@
         {/if}
         {#if meta.tags && meta.tags.author }
             <div class="meta">
-                <div class="icon di-icon icon-color-secondary"><DiGithubAlt /></div>
+                <div class="icon di-icon global__icon-secondary"><DiGithubAlt /></div>
                 <a href="https://github.com/{ meta.tags.author }">
                     { meta.tags.author }
                 </a>
@@ -48,7 +48,7 @@
             {#each Object.entries(meta.tags) as [key, value]}
                 {#if key !== 'author'}
                     <div class="meta">
-                        <div class=" md-icon icon-color-secondary"><FaHashtag /></div>
+                        <div class=" md-icon global__icon-secondary"><FaHashtag /></div>
                         <div class="tag">{value}</div>
                     </div>
                 {/if}
@@ -59,6 +59,9 @@
 
 <style>
     .card {
+        justify-content: space-between;
+        flex-direction: column;
+        display: flex;
         padding: 12px;
     }
     .header{
@@ -84,19 +87,16 @@
         align-items: center;
         display: flex;
         margin-right: 8px;
-        padding: 4px 0;
+        padding: 2px 0;
     }
     .header-date {
         text-align: right;
         font-size: .8em;
-        width: 78px;
-    }
-    .icon {
-        margin-right: 4px;
+        min-width: 64px;
     }
     .di-icon {
-        width: 20px;
-        height: 20px;
+        width: 21px;
+        height: 21px;
     }
     .fa-icon {
         width: 16px;
