@@ -14,7 +14,7 @@
   import {Highlight, LineNumbers } from "svelte-highlight";
   import golang                    from "svelte-highlight/languages/go";
   import theme_light               from "svelte-highlight/styles/default";
-  import theme_dark                from "svelte-highlight/styles/github-dark-dimmed";
+  import theme_dark                from "svelte-highlight/styles/github-dark";
 
   // static.
   import { theme }        from '../../../lib/theme.js';
