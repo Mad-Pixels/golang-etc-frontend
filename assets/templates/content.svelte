@@ -89,6 +89,7 @@
 <style>
     .article {
         padding: 0 10% 0 10%;
+        font-size: 1em;
     }
     .code-btn{
         display: flex;
@@ -104,11 +105,13 @@
     @media (max-width: 1020px) {
         .article {
             padding: 0 5% 0 5%;
+            font-size: .9em;
         }
     }
     @media (max-width: 768px) {
         .article {
             padding: 0;
+            font-size: .8em;
         }
     }
 </style>
