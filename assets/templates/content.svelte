@@ -11,8 +11,9 @@
   import DiGithubAlt     from 'svelte-icons/di/DiGithubAlt.svelte';
 
   // system.
-  import { onMount } from "svelte";
-  import { page }    from '$app/stores';
+  import { onMount }  from "svelte";
+  import { page }     from '$app/stores';
+  import { writable } from "svelte/store";
 
   // highlights.
   import {Highlight, LineNumbers } from "svelte-highlight";
@@ -28,19 +29,23 @@
 
   // content.
   let htmlContent = `{{index . "main.md"}}`;
+  let isLargeScreen = writable(false);
   let activeButtonIndex = null;
   let blocks = [];
 
   onMount(() => {
-    blocks = parseContent(htmlContent);
+    checkScreenWidth();
+    window.addEventListener('resize', checkScreenWidth);
 
+    blocks = parseContent(htmlContent);
     theme.subscribe(value => {
       updateTheme(value);
     });
     updateTheme($theme);
+
+    return () => { window.removeEventListener('resize', checkScreenWidth); }
   });
 
-  // clipboard.
   async function copy(content, index) {
     await navigator.clipboard.writeText(content);
     activeButtonIndex = index;
@@ -56,6 +61,9 @@
       style.textContent = theme === 'dark' ? theme_dark : theme_light;
       document.head.appendChild(style);
     }
+  }
+  function checkScreenWidth() {
+    isLargeScreen.set(window.innerWidth > 1024);
   }
 </script>
 
@@ -106,9 +114,13 @@
                                         {/if}
                                     </button>
                                 </div>
-                                <Highlight code={block.content} language={golang} let:highlighted>
-                                    <LineNumbers {highlighted} style="border-radius: 6px"/>
-                                </Highlight>
+                                {#if $isLargeScreen}
+                                    <Highlight code="{block.content}" language={golang} let:highlighted>
+                                        <LineNumbers {highlighted} style="border-radius: 6px"/>
+                                    </Highlight>
+                                {:else}
+                                    <Highlight language={golang} code="{block.content}" />
+                                {/if}
                             {:else}
                                 {@html block.content}
                             {/if}
@@ -164,7 +176,7 @@
         width: 20px;
     }
 
-    @media (max-width: 1020px) {
+    @media (max-width: 1024px) {
         .content {
             font-size: .9em;
         }
@@ -184,6 +196,7 @@
         }
         .date {
             padding-bottom: 0;
+            width: 100%;
         }
     }
     @media (max-width: 768px) {
