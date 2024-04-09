@@ -3,12 +3,17 @@
   import Header    from "../../../components/general/Header.svelte";
   import Content   from "../../../components/general/Content.svelte";
   import Footer    from "../../../components/general/Footer.svelte";
+  import FaCheck   from 'svelte-icons/fa/FaCheck.svelte';
   import FaCopy    from 'svelte-icons/fa/FaCopy.svelte';
-  import FaCheck   from 'svelte-icons/fa/FaCheck.svelte'
+
+  // icons.
+  import FaTelegramPlane from 'svelte-icons/fa/FaTelegramPlane.svelte';
+  import DiGithubAlt     from 'svelte-icons/di/DiGithubAlt.svelte';
 
   // system.
-  import { onMount } from "svelte";
-  import { page }    from '$app/stores';
+  import { onMount }  from "svelte";
+  import { page }     from '$app/stores';
+  import { writable } from "svelte/store";
 
   // highlights.
   import {Highlight, LineNumbers } from "svelte-highlight";
@@ -19,23 +24,28 @@
   // static.
   import { theme }        from '../../../lib/theme.js';
   import { router }       from '../../../stores/router.js';
+  import { formatDate }   from '../../../lib/format_date.js';
   import { parseContent } from '../../../lib/content_parser.js';
 
   // content.
   let htmlContent = `{{index . "main.md"}}`;
+  let isLargeScreen = writable(false);
   let activeButtonIndex = null;
   let blocks = [];
 
   onMount(() => {
-    blocks = parseContent(htmlContent);
+    checkScreenWidth();
+    window.addEventListener('resize', checkScreenWidth);
 
+    blocks = parseContent(htmlContent);
     theme.subscribe(value => {
       updateTheme(value);
     });
     updateTheme($theme);
+
+    return () => { window.removeEventListener('resize', checkScreenWidth); }
   });
 
-  // clipboard.
   async function copy(content, index) {
     await navigator.clipboard.writeText(content);
     activeButtonIndex = index;
@@ -52,6 +62,9 @@
       document.head.appendChild(style);
     }
   }
+  function checkScreenWidth() {
+    isLargeScreen.set(window.innerWidth > 1024);
+  }
 </script>
 
 <svelte:head>
@@ -61,53 +74,133 @@
 
 <Header/>
     <Content>
-        <div class="article">
-            <div class="global__block-main global__border-main">
-                {#each blocks as block, index (block.id)}
-                    {#if block.type === 'code'}
-                        <div class="code-btn">
-                            <button class="global__btn-main" on:click={() => copy(block.content, index)}>
-                                {#if index === activeButtonIndex}
-                                    <div class="icon"><FaCheck /></div>
+        <div class="content">
+            <div class="inner-container">
+                <div class="metadata">
+                    <div class="m_layout global__block-main global__border-main">
+                        {#if $router[$page.url.pathname] && $router[$page.url.pathname].telegram.date}
+                            <div class="date">
+                                <b>{ formatDate($router[$page.url.pathname].telegram.date) }</b>
+                            </div>
+                        {/if}
+                        {#if $router[$page.url.pathname] && $router[$page.url.pathname].telegram.message_id }
+                            <div class="meta">
+                                <div class="icon fa-icon global__icon-secondary"><FaTelegramPlane /></div>
+                                <a href="https://t.me/golangetc/{ $router[$page.url.pathname].telegram.message_id }">
+                                    telegram post
+                                </a>
+                            </div>
+                        {/if}
+                        {#if $router[$page.url.pathname] && $router[$page.url.pathname].tags.author }
+                            <div class="meta">
+                                <div class="icon di-icon global__icon-secondary"><DiGithubAlt /></div>
+                                <a href="https://github.com/{ $router[$page.url.pathname].tags.author }">
+                                    { $router[$page.url.pathname].tags.author }
+                                </a>
+                            </div>
+                        {/if}
+                    </div>
+                </div>
+                <div class="article">
+                    <div class="global__block-main global__border-main">
+                        {#each blocks as block, index (block.id)}
+                            {#if block.type === 'code'}
+                                <div class="code-btn">
+                                    <button class="global__btn-main" on:click={() => copy(block.content, index)}>
+                                        {#if index === activeButtonIndex}
+                                            <div class="icon"><FaCheck /></div>
+                                        {:else}
+                                            <div class="icon"><FaCopy /></div>
+                                        {/if}
+                                    </button>
+                                </div>
+                                {#if $isLargeScreen}
+                                    <Highlight code="{block.content}" language={golang} let:highlighted>
+                                        <LineNumbers {highlighted} style="border-radius: 6px"/>
+                                    </Highlight>
                                 {:else}
-                                    <div class="icon"><FaCopy /></div>
+                                    <Highlight language={golang} code="{block.content}" />
                                 {/if}
-                            </button>
-                        </div>
-                        <Highlight code={block.content} language={golang} let:highlighted>
-                            <LineNumbers {highlighted} style="border-radius: 6px"/>
-                        </Highlight>
-                    {:else}
-                        {@html block.content}
-                    {/if}
-                {/each}
+                            {:else}
+                                {@html block.content}
+                            {/if}
+                        {/each}
+                    </div>
+                </div>
             </div>
         </div>
     </Content>
 <Footer/>
 
 <style>
+    .date {
+        font-size: 1em;
+        padding-bottom: 12px;
+    }
+    .inner-container {
+        flex-direction: row-reverse;
+        min-width: 100%;
+        display: flex;
+        width: 100%;
+        gap: 20px;
+    }
+    .content {
+        justify-content: center;
+        padding: 0 10%;
+        display: flex;
+    }
+    .metadata {
+        flex-shrink: 0;
+        width: 240px;
+    }
     .article {
-        padding: 0 10% 0 10%;
+        width: calc(100% - 260px);
+        flex-grow: 1;
+    }
+
+    .meta {
+        flex-direction: row;
+        align-items: center;
+        margin-right: 8px;
+        padding: 2px 0;
+        display: flex;
     }
     .code-btn{
-        display: flex;
         justify-content: flex-end;
         padding: 4px 0 4px 0;
+        display: flex;
     }
     .icon{
         padding: 4px;
-        height: 16px;
-        width: 16px;
+        height: 20px;
+        width: 20px;
     }
 
-    @media (max-width: 1020px) {
-        .article {
-            padding: 0 5% 0 5%;
+    @media (max-width: 1024px) {
+        .content {
+            font-size: .9em;
+        }
+        .inner-container {
+            flex-direction: column;
+            gap: 10px;
+        }
+        .article, .metadata {
+            width: 100%;
+        }
+        .m_layout {
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+            display: flex;
+        }
+        .date {
+            padding-bottom: 0;
+            width: 100%;
         }
     }
     @media (max-width: 768px) {
-        .article {
+        .content {
             padding: 0;
         }
     }

@@ -2,18 +2,12 @@
   import FaTelegramPlane from 'svelte-icons/fa/FaTelegramPlane.svelte';
   import DiGithubAlt     from 'svelte-icons/di/DiGithubAlt.svelte';
   import FaHashtag       from 'svelte-icons/fa/FaHashtag.svelte';
-  import {lineBreaks}    from '../lib/line_breaks.js';
+  import { formatDate }  from '../lib/format_date.js';
+  import { lineBreaks }  from '../lib/line_breaks.js';
 
   export let meta;
   export let url;
 
-  function formatDate(timestamp) {
-    const date = new Date(timestamp * 1000);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString().slice(-2);
-    return `${day}-${month}-${year}`;
-  }
 </script>
 
 <div class="card global__border-main global__card-main">

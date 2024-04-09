@@ -130,6 +130,9 @@ button{
 }
 
 @media (max-width: 768px) {
+    h1 {
+        font-size: 1.7em;
+    }
     .container-block {
         padding: 1em;
     }
