@@ -61,40 +61,66 @@
 
 <Header/>
     <Content>
-        <div class="article">
-            <div class="global__block-main global__border-main">
-                {#each blocks as block, index (block.id)}
-                    {#if block.type === 'code'}
-                        <div class="code-btn">
-                            <button class="global__btn-main" on:click={() => copy(block.content, index)}>
-                                {#if index === activeButtonIndex}
-                                    <div class="icon"><FaCheck /></div>
-                                {:else}
-                                    <div class="icon"><FaCopy /></div>
-                                {/if}
-                            </button>
-                        </div>
-                        <Highlight code={block.content} language={golang} let:highlighted>
-                            <LineNumbers {highlighted} style="border-radius: 6px"/>
-                        </Highlight>
-                    {:else}
-                        {@html block.content}
-                    {/if}
-                {/each}
+        <div class="content">
+            <div class="inner-container">
+                <div class="metadata">
+                    <div class="global__block-main global__border-main">
+                        asd
+                    </div>
+                </div>
+                <div class="article">
+                    <div class="global__block-main global__border-main">
+                        {#each blocks as block, index (block.id)}
+                            {#if block.type === 'code'}
+                                <div class="code-btn">
+                                    <button class="global__btn-main" on:click={() => copy(block.content, index)}>
+                                        {#if index === activeButtonIndex}
+                                            <div class="icon"><FaCheck /></div>
+                                        {:else}
+                                            <div class="icon"><FaCopy /></div>
+                                        {/if}
+                                    </button>
+                                </div>
+                                <Highlight code={block.content} language={golang} let:highlighted>
+                                    <LineNumbers {highlighted} style="border-radius: 6px"/>
+                                </Highlight>
+                            {:else}
+                                {@html block.content}
+                            {/if}
+                        {/each}
+                    </div>
+                </div>
             </div>
         </div>
     </Content>
 <Footer/>
 
 <style>
-    .article {
-        padding: 0 10% 0 10%;
-        font-size: 1em;
-    }
-    .code-btn{
+    .inner-container {
+        flex-direction: row-reverse;
+        min-width: 100%;
         display: flex;
+        width: 100%;
+        gap: 20px;
+    }
+    .content {
+        justify-content: center;
+        padding: 0 10%;
+        display: flex;
+    }
+    .metadata {
+        flex-shrink: 0;
+        width: 240px;
+    }
+    .article {
+        width: calc(100% - 260px);
+        flex-grow: 1;
+    }
+
+    .code-btn{
         justify-content: flex-end;
         padding: 4px 0 4px 0;
+        display: flex;
     }
     .icon{
         padding: 4px;
@@ -103,15 +129,20 @@
     }
 
     @media (max-width: 1020px) {
-        .article {
-            padding: 0 5% 0 5%;
+        .content {
             font-size: .9em;
+        }
+        .inner-container {
+            flex-direction: column;
+            gap: 10px;
+        }
+        .article, .metadata {
+            width: 100%;
         }
     }
     @media (max-width: 768px) {
-        .article {
+        .content {
             padding: 0;
-            font-size: .8em;
         }
     }
 </style>
