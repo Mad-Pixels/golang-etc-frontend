@@ -69,7 +69,7 @@
         <div class="content">
             <div class="inner-container">
                 <div class="metadata">
-                    <div class="global__block-main global__border-main">
+                    <div class="m_layout global__block-main global__border-main">
                         {#if $router[$page.url.pathname] && $router[$page.url.pathname].telegram.date}
                             <div class="date">
                                 <b>{ formatDate($router[$page.url.pathname].telegram.date) }</b>
@@ -174,6 +174,16 @@
         }
         .article, .metadata {
             width: 100%;
+        }
+        .m_layout {
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+            display: flex;
+        }
+        .date {
+            padding-bottom: 0;
         }
     }
     @media (max-width: 768px) {
