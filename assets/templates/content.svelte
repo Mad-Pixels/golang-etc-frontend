@@ -3,8 +3,12 @@
   import Header    from "../../../components/general/Header.svelte";
   import Content   from "../../../components/general/Content.svelte";
   import Footer    from "../../../components/general/Footer.svelte";
+  import FaCheck   from 'svelte-icons/fa/FaCheck.svelte';
   import FaCopy    from 'svelte-icons/fa/FaCopy.svelte';
-  import FaCheck   from 'svelte-icons/fa/FaCheck.svelte'
+
+  // icons.
+  import FaTelegramPlane from 'svelte-icons/fa/FaTelegramPlane.svelte';
+  import DiGithubAlt     from 'svelte-icons/di/DiGithubAlt.svelte';
 
   // system.
   import { onMount } from "svelte";
@@ -19,6 +23,7 @@
   // static.
   import { theme }        from '../../../lib/theme.js';
   import { router }       from '../../../stores/router.js';
+  import { formatDate }   from '../../../lib/format_date.js';
   import { parseContent } from '../../../lib/content_parser.js';
 
   // content.
@@ -65,7 +70,27 @@
             <div class="inner-container">
                 <div class="metadata">
                     <div class="global__block-main global__border-main">
-                        asd
+                        {#if $router[$page.url.pathname] && $router[$page.url.pathname].telegram.date}
+                            <div class="date">
+                                <b>{ formatDate($router[$page.url.pathname].telegram.date) }</b>
+                            </div>
+                        {/if}
+                        {#if $router[$page.url.pathname] && $router[$page.url.pathname].telegram.message_id }
+                            <div class="meta">
+                                <div class="icon fa-icon global__icon-secondary"><FaTelegramPlane /></div>
+                                <a href="https://t.me/golangetc/{ $router[$page.url.pathname].telegram.message_id }">
+                                    telegram post
+                                </a>
+                            </div>
+                        {/if}
+                        {#if $router[$page.url.pathname] && $router[$page.url.pathname].tags.author }
+                            <div class="meta">
+                                <div class="icon di-icon global__icon-secondary"><DiGithubAlt /></div>
+                                <a href="https://github.com/{ $router[$page.url.pathname].tags.author }">
+                                    { $router[$page.url.pathname].tags.author }
+                                </a>
+                            </div>
+                        {/if}
                     </div>
                 </div>
                 <div class="article">
@@ -96,6 +121,10 @@
 <Footer/>
 
 <style>
+    .date {
+        font-size: 1em;
+        padding-bottom: 12px;
+    }
     .inner-container {
         flex-direction: row-reverse;
         min-width: 100%;
@@ -117,6 +146,13 @@
         flex-grow: 1;
     }
 
+    .meta {
+        flex-direction: row;
+        align-items: center;
+        margin-right: 8px;
+        padding: 2px 0;
+        display: flex;
+    }
     .code-btn{
         justify-content: flex-end;
         padding: 4px 0 4px 0;
@@ -124,8 +160,8 @@
     }
     .icon{
         padding: 4px;
-        height: 16px;
-        width: 16px;
+        height: 20px;
+        width: 20px;
     }
 
     @media (max-width: 1020px) {
