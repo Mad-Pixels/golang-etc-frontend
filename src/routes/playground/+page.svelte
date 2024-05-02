@@ -10,14 +10,19 @@
   let editorContainer;
   let result = writable("");
   let currentTheme = writable('light');
+  let resizeListener;
 
   onMount(() => {
-    const monacoPromise = import('monaco-editor');
-
-    theme.subscribe(value => { // Подписка на изменение темы
+    theme.subscribe(value => {
       currentTheme.set(value);
-      loadEditor();
+      if (editor) {
+        updateEditorTheme();
+      } else {
+        loadEditor();
+      }
     });
+
+    loadEditor();
   });
 
   async function loadEditor() {
@@ -25,32 +30,38 @@
     if (editor) {
       editor.dispose(); // Убедитесь, что предыдущий экземпляр редактора уничтожен
     }
-    fetch($currentTheme === 'dark' ? '/src/theme_editor/dark.json' : '/src/theme_editor/light.json')
-      .then(data => data.json())
-      .then(data => {
-        monaco.editor.defineTheme('monokai', data);
-        monaco.editor.setTheme('monokai');
-      })
 
+    // Настройки редактора
     editor = monaco.editor.create(editorContainer, {
       value: '// напишите ваш код на Go здесь',
       language: 'go',
-      //theme: $currentTheme === 'dark' ? 'vs-dark' : 'vs-light' // Пример темы
+      theme: currentTheme === 'dark' ? 'vs-dark' : 'vs-light',
+      minimap: { enabled: window.innerWidth > 768 } // Включение или отключение мини-карты в зависимости от размера окна
     });
 
-    function updateEditorLayout() {
-      if (editor) {
+    if (!resizeListener) {
+      resizeListener = () => {
         editor.layout();
-      }
+        editor.updateOptions({ // Обновление опций редактора при изменении размера окна
+          minimap: { enabled: window.innerWidth > 768 }
+        });
+      };
+      window.addEventListener('resize', resizeListener);
     }
 
-    window.addEventListener('resize', updateEditorLayout);
     onDestroy(() => {
-      window.removeEventListener('resize', updateEditorLayout);
-      if (editor) {
-        editor.dispose();
-      }
+      window.removeEventListener('resize', resizeListener);
+      editor.dispose();
     });
+  }
+
+  function updateEditorTheme() {
+    fetch($currentTheme === 'dark' ? '/src/theme_editor/dark.json' : '/src/theme_editor/light.json')
+      .then(data => data.json())
+      .then(data => {
+        monaco.editor.defineTheme('custom-theme', data);
+        editor.setTheme('custom-theme');
+      });
   }
 
 
