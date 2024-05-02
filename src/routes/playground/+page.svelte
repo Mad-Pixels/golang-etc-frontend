@@ -11,18 +11,13 @@
   let result = writable("");
   let currentTheme = writable('light');
   let resizeListener;
-
   onMount(() => {
-    theme.subscribe(value => {
-      currentTheme.set(value);
-      if (editor) {
-        updateEditorTheme();
-      } else {
-        loadEditor();
-      }
-    });
+    const monacoPromise = import('monaco-editor');
 
-    loadEditor();
+    theme.subscribe(value => { // Подписка на изменение темы
+      currentTheme.set(value);
+      loadEditor();
+    });
   });
 
   async function loadEditor() {
@@ -30,13 +25,18 @@
     if (editor) {
       editor.dispose(); // Убедитесь, что предыдущий экземпляр редактора уничтожен
     }
+    fetch($currentTheme === 'dark' ? '/src/theme_editor/dark.json' : '/src/theme_editor/light.json')
+      .then(data => data.json())
+      .then(data => {
+        monaco.editor.defineTheme('monokai', data);
+        monaco.editor.setTheme('monokai');
+      })
 
-    // Настройки редактора
     editor = monaco.editor.create(editorContainer, {
       value: '// напишите ваш код на Go здесь',
       language: 'go',
-      theme: currentTheme === 'dark' ? 'vs-dark' : 'vs-light',
-      minimap: { enabled: window.innerWidth > 768 } // Включение или отключение мини-карты в зависимости от размера окна
+      minimap: { enabled: window.innerWidth > 768 }
+      //theme: $currentTheme === 'dark' ? 'vs-dark' : 'vs-light' // Пример темы
     });
 
     if (!resizeListener) {
@@ -49,19 +49,19 @@
       window.addEventListener('resize', resizeListener);
     }
 
-    onDestroy(() => {
-      window.removeEventListener('resize', resizeListener);
-      editor.dispose();
-    });
-  }
+    function updateEditorLayout() {
+      if (editor) {
+        editor.layout();
+      }
+    }
 
-  function updateEditorTheme() {
-    fetch($currentTheme === 'dark' ? '/src/theme_editor/dark.json' : '/src/theme_editor/light.json')
-      .then(data => data.json())
-      .then(data => {
-        monaco.editor.defineTheme('custom-theme', data);
-        editor.setTheme('custom-theme');
-      });
+    window.addEventListener('resize', updateEditorLayout);
+    onDestroy(() => {
+      window.removeEventListener('resize', updateEditorLayout);
+      if (editor) {
+        editor.dispose();
+      }
+    });
   }
 
 
