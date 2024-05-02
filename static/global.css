@@ -9,7 +9,7 @@
     --btn-main-color-hover: #2c7db0;
     --header-main-color:    #2a2e32;
     --text-main-color:      #1f2329;
-    --text-secondary-color: #6e7781;
+    --text-secondary-color: #2a2e32;
     --border-main-color:    #d0d7de;
     --link-main-color:      #0a69da;
     --icon-main-color:      #2a2e32;
@@ -27,7 +27,7 @@
     --btn-main-color-hover: #259a3c;
     --header-main-color:    #f5f5f5;
     --text-main-color:      #f6f7f9;
-    --text-secondary-color: #838d97;
+    --text-secondary-color: #f5f5f5;
     --border-main-color:    #30363d;
     --link-main-color:      #2f81f7;
     --icon-main-color:      #f5f5f5;
@@ -118,6 +118,23 @@ button{
 .global__btn-main:hover{
     background-color: var(--btn-main-color-hover);
     transition: color 0.5s ease 0.5s;
+}
+.global__btn-secondary{
+    background-color: var(--header-color);
+    border: 2px solid var(--btn-main-color);
+    color: var(--text-secondary-color);
+    border-radius: 4px;
+}
+.global__btn-secondary:hover{
+    border-color: var(--btn-main-color-hover);
+    transition: color 0.5s ease 0.5s;
+    cursor: pointer;
+}
+.global__btn-secondary:focus{
+    outline: none;
+}
+.global__btn-select{
+    -webkit-appearance: none;
 }
 
 .global__border-main {
