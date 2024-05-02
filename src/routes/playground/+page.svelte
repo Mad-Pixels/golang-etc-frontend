@@ -25,10 +25,17 @@
     if (editor) {
       editor.dispose(); // Убедитесь, что предыдущий экземпляр редактора уничтожен
     }
+    fetch($currentTheme === 'dark' ? '/src/theme_editor/dark.json' : '/src/theme_editor/light.json')
+      .then(data => data.json())
+      .then(data => {
+        monaco.editor.defineTheme('monokai', data);
+        monaco.editor.setTheme('monokai');
+      })
+
     editor = monaco.editor.create(editorContainer, {
       value: '// напишите ваш код на Go здесь',
       language: 'go',
-      theme: $currentTheme === 'dark' ? 'vs-dark' : 'vs-light' // Пример темы
+      //theme: $currentTheme === 'dark' ? 'vs-dark' : 'vs-light' // Пример темы
     });
 
     function updateEditorLayout() {
