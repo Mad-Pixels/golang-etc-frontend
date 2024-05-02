@@ -4,50 +4,48 @@
   import Content from "../../components/general/Content.svelte";
   import { onMount, onDestroy } from 'svelte';
   import { writable } from 'svelte/store';
+  import { theme } from '$lib/theme.js';
 
   let editor;
   let editorContainer;
   let result = writable("");
+  let currentTheme = writable('light');
 
   onMount(() => {
     const monacoPromise = import('monaco-editor');
 
-    monacoPromise.then(monaco => {
-      editor = monaco.editor.create(editorContainer, {
-        value: '// напишите ваш код на Go здесь',
-        language: 'go',
-        theme: 'vs-dark'
-      });
-
-      // Вызовите layout при изменении размера окна
-      function updateEditorLayout() {
-        if (editor) {
-          editor.layout();
-        }
-      }
-
-      window.addEventListener('resize', updateEditorLayout);
-
-      onDestroy(() => {
-        window.removeEventListener('resize', updateEditorLayout);
-        if (editor) {
-          editor.dispose();
-        }
-      });
+    theme.subscribe(value => { // Подписка на изменение темы
+      currentTheme.set(value);
+      loadEditor();
     });
   });
 
-  // function updateEditorLayout() {
-  //   if (editor) {
-  //     editor.layout();
-  //   }
-  // }
-  // onDestroy(() => {
-  //   window.removeEventListener('resize', updateEditorLayout);
-  //   if (editor) {
-  //     editor.dispose();
-  //   }
-  // });
+  async function loadEditor() {
+    const monaco = await import('monaco-editor');
+    if (editor) {
+      editor.dispose(); // Убедитесь, что предыдущий экземпляр редактора уничтожен
+    }
+    editor = monaco.editor.create(editorContainer, {
+      value: '// напишите ваш код на Go здесь',
+      language: 'go',
+      theme: $currentTheme === 'dark' ? 'vs-dark' : 'vs-light' // Пример темы
+    });
+
+    function updateEditorLayout() {
+      if (editor) {
+        editor.layout();
+      }
+    }
+
+    window.addEventListener('resize', updateEditorLayout);
+    onDestroy(() => {
+      window.removeEventListener('resize', updateEditorLayout);
+      if (editor) {
+        editor.dispose();
+      }
+    });
+  }
+
 
   const options = [
     { color: 'red', component: "RedThing" },
