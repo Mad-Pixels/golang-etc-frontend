@@ -89,14 +89,12 @@
             </select>
         </div>
     </div>
-    <Split class="ide" horizontal>
-        <div slot="primary">
-            <div class="editor" bind:this={editorContainer}></div>
-        </div>
-        <div slot="secondary">
-            <pre class="global__block-main">{$result}</pre>
-        </div>
-    </Split>
+    <div class="ide">
+        <Split class="ide" horizontal initialPrimarySize="80%" resetOnDoubleClick >
+            <div slot="primary" class="editor" bind:this={editorContainer}></div>
+            <div slot="secondary" class="editor">{$result}</div>
+        </Split>
+    </div>
 </Content>
 <Footer/>
 
@@ -109,11 +107,6 @@
         align-items: center;
         flex-direction: row;
         justify-content: space-between;
-    }
-    .ide{
-        flex-direction: column;
-        display: flex;
-        width: 100%;
     }
     .manage_board{
         gap: 12px;
@@ -128,15 +121,13 @@
     .btn_select {
         padding: 6px 6px 6px 6px;
     }
-    .editor {
-        min-height: 420px;
-        height: 50vh;
+    .ide {
         width: 100%;
-        flex: 1;
+        height: 76vh;
     }
-    pre {
-        height: 150px;
-        padding: 10px;
+    .editor{
+        width: 100%;
+        height: 76vh;
     }
 
     @media (max-width: 768px) {
