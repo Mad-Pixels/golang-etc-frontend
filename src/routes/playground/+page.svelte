@@ -8,6 +8,7 @@
   import { theme }       from "$lib/theme.js";
   import { hello_world } from "../../stores/playground_start.js";
   import { versions }    from "../../stores/playground_versions.js";
+  import { Split }       from "@geoffcox/svelte-splitter"
 
   let playground_url = "https://srv516648.hstgr.cloud/api/v1/playground";
   let theme_light    = "/src/theme_editor/light.json";
@@ -88,10 +89,14 @@
             </select>
         </div>
     </div>
-    <div class="ide">
-        <div class="editor" bind:this={editorContainer}></div>
-        <pre class="global__block-main">{$result}</pre>
-    </div>
+    <Split class="ide" horizontal>
+        <div slot="primary">
+            <div class="editor" bind:this={editorContainer}></div>
+        </div>
+        <div slot="secondary">
+            <pre class="global__block-main">{$result}</pre>
+        </div>
+    </Split>
 </Content>
 <Footer/>
 

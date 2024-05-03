@@ -34,6 +34,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@geoffcox/svelte-splitter": "^1.0.1",
     "monaco-editor": "^0.48.0",
     "svelte-highlight": "^7.6.0",
     "svelte-icons": "^2.1.0"
