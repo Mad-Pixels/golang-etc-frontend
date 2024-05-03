@@ -1,20 +1,29 @@
 <script>
-  import Header from "../../components/general/Header.svelte";
-  import Footer from "../../components/general/Footer.svelte";
+  import Header  from  "../../components/general/Header.svelte";
+  import Footer  from  "../../components/general/Footer.svelte";
   import Content from "../../components/general/Content.svelte";
-  import { onMount, onDestroy } from 'svelte';
-  import { writable } from 'svelte/store';
-  import { theme } from '$lib/theme.js';
 
-  let editor;
-  let editorContainer;
-  let result = writable("");
+  import { onMount }     from "svelte";
+  import { writable }    from "svelte/store";
+  import { theme }       from "$lib/theme.js";
+  import { hello_world } from "../../stores/playground_start.js";
+  import { versions }    from "../../stores/playground_versions.js";
+
+  let playground_url = "https://srv516648.hstgr.cloud/api/v1/playground";
+  let theme_light    = "/src/theme_editor/light.json";
+  let theme_dark     = "/src/theme_editor/dark.json";
+
   let currentTheme = writable('light');
+  let result = writable("");
+  let editorContainer;
   let resizeListener;
-  onMount(() => {
-    const monacoPromise = import('monaco-editor');
+  let editor;
 
-    theme.subscribe(value => { // Подписка на изменение темы
+  let selected = versions[0].golang;
+  let code = hello_world;
+
+  onMount(() => {
+    theme.subscribe(value => {
       currentTheme.set(value);
       loadEditor();
     });
@@ -22,75 +31,44 @@
 
   async function loadEditor() {
     const monaco = await import('monaco-editor');
-    if (editor) {
-      editor.dispose(); // Убедитесь, что предыдущий экземпляр редактора уничтожен
-    }
-    fetch($currentTheme === 'dark' ? '/src/theme_editor/dark.json' : '/src/theme_editor/light.json')
+    if (editor) { editor.dispose(); }
+
+    fetch($currentTheme === 'dark' ? theme_dark : theme_light)
       .then(data => data.json())
       .then(data => {
-        monaco.editor.defineTheme('monokai', data);
-        monaco.editor.setTheme('monokai');
-      })
-
+        monaco.editor.defineTheme('playground', data);
+        monaco.editor.setTheme('playground');
+      });
     editor = monaco.editor.create(editorContainer, {
-      value: '// напишите ваш код на Go здесь',
+      minimap: { enabled: window.innerWidth > 768 },
       language: 'go',
-      minimap: { enabled: window.innerWidth > 768 }
-      //theme: $currentTheme === 'dark' ? 'vs-dark' : 'vs-light' // Пример темы
+      value: code,
     });
 
     if (!resizeListener) {
       resizeListener = () => {
         editor.layout();
-        editor.updateOptions({ // Обновление опций редактора при изменении размера окна
+        editor.updateOptions({
           minimap: { enabled: window.innerWidth > 768 }
         });
       };
       window.addEventListener('resize', resizeListener);
     }
-
-    function updateEditorLayout() {
-      if (editor) {
-        editor.layout();
-      }
-    }
-
+    function updateEditorLayout() {if (editor) { editor.layout(); }}
     window.addEventListener('resize', updateEditorLayout);
-    onDestroy(() => {
-      window.removeEventListener('resize', updateEditorLayout);
-      if (editor) {
-        editor.dispose();
-      }
-    });
   }
-
-
-  const options = [
-    { color: 'red', component: "RedThing" },
-    { color: 'green', component: "GreenThing" },
-    { color: 'blue', component: "BlueThing" }
-  ];
-  let selected = options[0];
 
   async function sendCode() {
     const code = editor.getValue();
     const encodedCode = btoa(code);
-    const response = await fetch('https://srv516648.hstgr.cloud/api/v1/playground', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        version: "1.22",
-        source: encodedCode
-      })
+    const response = await fetch(playground_url, {
+      method:  "POST",
+      headers: {"Content-Type": "application/json"},
+      body:    JSON.stringify({version: selected, source: encodedCode})
     });
     const data = await response.json();
-    result.set(data.data); // Обновляем переменную результатами
+    result.set(data.data);
   }
-  //
-
-
 </script>
 
 <svelte:head>
@@ -104,25 +82,23 @@
         <div class="manage_board">
             <button on:click={sendCode} class="global__btn-main btn_run">execute</button>
             <select bind:value={selected} class="global__btn-secondary global__btn-select btn_select">
-                {#each options as option}
-                    <option value={option}>{option.color}</option>
+                {#each versions as version}
+                    <option value={version.golang}>{version.golang}</option>
                 {/each}
             </select>
         </div>
     </div>
     <div class="ide">
         <div class="editor" bind:this={editorContainer}></div>
+        <pre class="global__block-main">{$result}</pre>
     </div>
-
-
-
-
-    <h2>Результат выполнения:</h2>
-    <pre>{$result}</pre> <!-- Блок для отображения результата -->
 </Content>
 <Footer/>
 
 <style>
+    h1 {
+        margin-top: 0;
+    }
     .title{
         display: flex;
         align-items: center;
@@ -138,7 +114,7 @@
         gap: 12px;
         display: flex;
         align-items: center;
-        padding: 24px 0 24px 0;
+        padding: 0 0 18px 0;
         flex-direction: row-reverse;
     }
     .btn_run {
@@ -148,15 +124,14 @@
         padding: 6px 6px 6px 6px;
     }
     .editor {
-        min-height: 200px;
+        min-height: 420px;
         height: 50vh;
         width: 100%;
         flex: 1;
     }
     pre {
-        background-color: #f4f4f4;
+        height: 150px;
         padding: 10px;
-        border: 1px solid #ccc;
     }
 
     @media (max-width: 768px) {
@@ -167,5 +142,4 @@
             height: 30vh;
         }
     }
-
 </style>
