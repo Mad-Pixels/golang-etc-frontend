@@ -5,3 +5,8 @@ export function formatDate(timestamp) {
   const year = date.getFullYear().toString().slice(-2);
   return `${day}-${month}-${year}`;
 }
+
+export function getDateTime() {
+  const now = new Date();
+  return now.toLocaleString();
+}

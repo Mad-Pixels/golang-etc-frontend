@@ -6,6 +6,8 @@
   import { onMount }     from "svelte";
   import { writable }    from "svelte/store";
   import { theme }       from "$lib/theme.js";
+  import { getDateTime } from "$lib/format_date.js";
+  import { formatConsole }  from "$lib/format_html.js";
   import { hello_world } from "../../stores/playground_start.js";
   import { versions }    from "../../stores/playground_versions.js";
   import { Split }       from "@geoffcox/svelte-splitter"
@@ -15,6 +17,7 @@
   let theme_dark     = "/src/theme_editor/dark.json";
 
   let currentTheme = writable('light');
+  let waiter = writable(false);
   let result = writable("");
   let editorContainer;
   let resizeListener;
@@ -60,6 +63,9 @@
   }
 
   async function sendCode() {
+    waiter.set(true);
+    result.set("");
+
     const code = editor.getValue();
     const encodedCode = btoa(code);
     const response = await fetch(playground_url, {
@@ -68,7 +74,10 @@
       body:    JSON.stringify({version: selected, source: encodedCode})
     });
     const data = await response.json();
-    result.set(data.data);
+    const date = getDateTime();
+
+    result.set(formatConsole(`${date}:<br>\n${data.data}`));
+    waiter.set(false);
   }
 </script>
 
@@ -81,7 +90,7 @@
     <div class="title">
         <h1>Playground</h1>
         <div class="manage_board">
-            <button on:click={sendCode} class="global__btn-main btn_run">execute</button>
+            <button on:click={sendCode} class="global__btn-main btn_run { $waiter ? 'global__btn-disabled' : '' }" disabled={$waiter}>execute</button>
             <select bind:value={selected} class="global__btn-secondary global__btn-select btn_select">
                 {#each versions as version}
                     <option value={version.golang}>{version.golang}</option>
@@ -92,7 +101,7 @@
     <div class="ide">
         <Split class="ide" horizontal initialPrimarySize="80%" resetOnDoubleClick >
             <div slot="primary" class="editor" bind:this={editorContainer}></div>
-            <div slot="secondary" class="editor">{$result}</div>
+            <div slot="secondary" class="editor">{@html $result}</div>
         </Split>
     </div>
 </Content>
