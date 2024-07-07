@@ -37,7 +37,7 @@ ROOT_DIR=$(git rev-parse --show-toplevel)
 
 POSTIFY_VERSION="0.0.3"
 POSTIFY_NAME="postify"
-POSTIFY_URL="https://github.com/Mad-Pixels/go-postify/releases/download/v${POSTIFY_VERSION}/${POSTIFY_NAME}-${OS}-${ARCH}"
+POSTIFY_URL="https://github.com/Mad-Pixels/postify/releases/download/v${POSTIFY_VERSION}/${POSTIFY_NAME}-${OS}-${ARCH}"
 
 STATIC_NAME="golang-etc-content"
 STATIC_SOURCE_GIT_URL="https://github.com/Mad-Pixels/${STATIC_NAME}.git"
